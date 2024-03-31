@@ -1,21 +1,33 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(SpriteRenderer))]
 public class Block : MonoBehaviour
 {
-    [SerializeField] private float _speed;
-
-    private SpriteRenderer _spriteRenderer;
+    private float _speed;
     private Vector2 _direction;
-    private bool _isStoped;
+    private SpriteRenderer _spriteRenderer;
+    private bool _isStoped; 
+    private UnityEvent _blockStopped;
+
+    public event UnityAction BlockStopped {
+        add => _blockStopped.AddListener(value);
+        remove => _blockStopped.RemoveListener(value);
+    }
 
     private void Awake() {
         _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    private void Initialize(Vector2 direction, Color color) {
+    public void Initialize(Vector2 direction, float speed, Color color) {
+        _speed = speed;
         _direction = direction;
         _spriteRenderer.color = color;
+    }
+
+    public void Initialize(Color color) {
+        _spriteRenderer.color = color;
+        _isStoped = true;
     }
 
     private void Update() {
@@ -24,6 +36,7 @@ public class Block : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0)) {
             _isStoped = true;
+            _blockStopped?.Invoke();
             return;
         }
 
