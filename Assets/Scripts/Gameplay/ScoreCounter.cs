@@ -7,6 +7,10 @@ public class ScoreCounter : MonoBehaviour
 
     private UnityEvent<int> _updateScore;
 
+    public int Score {
+        get => _score; 
+    }
+
     public event UnityAction<int> UpdateScore {
         add => _updateScore?.AddListener(value);
         remove => _updateScore?.RemoveListener(value);

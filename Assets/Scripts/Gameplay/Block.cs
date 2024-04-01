@@ -8,9 +8,9 @@ public class Block : MonoBehaviour
     private Vector2 _direction;
     private SpriteRenderer _spriteRenderer;
     private bool _isStoped; 
-    private UnityEvent _blockStopped;
+    private UnityEvent<Block> _blockStopped;
 
-    public event UnityAction BlockStopped {
+    public event UnityAction<Block> BlockStopped {
         add => _blockStopped.AddListener(value);
         remove => _blockStopped.RemoveListener(value);
     }
@@ -36,7 +36,7 @@ public class Block : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0)) {
             _isStoped = true;
-            _blockStopped?.Invoke();
+            _blockStopped?.Invoke(this);
             return;
         }
 
