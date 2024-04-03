@@ -17,6 +17,8 @@ public class Block : MonoBehaviour
 
     private void Awake() {
         _spriteRenderer = GetComponent<SpriteRenderer>();
+
+        _blockStopped = new UnityEvent<Block>();
     }
 
     public void Initialize(Vector2 direction, float speed, Color color) {
@@ -35,6 +37,7 @@ public class Block : MonoBehaviour
             return;
 
         if (Input.GetMouseButtonDown(0)) {
+            Debug.Log("Stop");
             _isStoped = true;
             _blockStopped?.Invoke(this);
             return;

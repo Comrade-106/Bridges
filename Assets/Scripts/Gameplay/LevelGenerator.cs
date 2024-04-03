@@ -8,7 +8,7 @@ public class LevelGenerator : MonoBehaviour
     [SerializeField] private int _maxBlockCount;
     [SerializeField] private BlockSpawner _blockSpawner;
 
-    private Level GenerateNewLevel() {
+    public Level GenerateNewLevel() {
         int blockCount = Random.Range(_minBlockCount, _maxBlockCount);
 
         var startBlock = _blockSpawner.SpawnStaticBlock();

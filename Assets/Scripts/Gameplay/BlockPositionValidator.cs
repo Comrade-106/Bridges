@@ -26,6 +26,12 @@ public class BlockPositionValidator : MonoBehaviour
         remove => _blockApprove.RemoveListener(value);
     }
 
+    private void Awake() {
+        _blockApprove = new UnityEvent();
+        _gameOver = new UnityEvent<int>();
+        _gameFinish = new UnityEvent<int>();
+    }
+
     public void Initialize(Block startBlock) {
         _previousBlock = startBlock;
     }
@@ -43,6 +49,7 @@ public class BlockPositionValidator : MonoBehaviour
 
             _blockApprove?.Invoke();
         } else {
+            Debug.Log("Game Over");
             _gameOver?.Invoke(_scoreCounter.Score);
         }
     }
@@ -51,9 +58,10 @@ public class BlockPositionValidator : MonoBehaviour
         if (_previousBlock.transform.position.y + _blockSize > block.transform.position.y &&
              _previousBlock.transform.position.y - _blockSize < block.transform.position.y) {
             _scoreCounter.AddScore(_previousBlock, block);
-
+            Debug.Log("Game Finish");
             _gameFinish?.Invoke(_scoreCounter.Score);
         } else {
+            Debug.Log("Game Over");
             _gameOver?.Invoke(_scoreCounter.Score);
         }
     }

@@ -18,10 +18,12 @@ public class ObjectPool : MonoBehaviour
         Block block;
         if (_blocks.Count == 0) {
             block = Instantiate(_prefab, _container);
-            _activeBlocks.Enqueue(block);
         } else {
             block = _blocks.Dequeue();
+            block.gameObject.SetActive(true);
         }
+        
+        _activeBlocks.Enqueue(block);
 
         return block;
     }
