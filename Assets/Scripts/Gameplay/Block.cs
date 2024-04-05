@@ -37,7 +37,6 @@ public class Block : MonoBehaviour
             return;
 
         if (Input.GetMouseButtonDown(0)) {
-            Debug.Log("Stop");
             _isStoped = true;
             _blockStopped?.Invoke(this);
             return;

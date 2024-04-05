@@ -5,6 +5,7 @@ public class BlockPositionValidator : MonoBehaviour
 {
     [SerializeField] private float _blockSize;
     [SerializeField] private ScoreCounter _scoreCounter;
+    [SerializeField] private MapBounds _mapBounds;
 
     private Block _previousBlock;
     private UnityEvent<int> _gameOver;
@@ -30,6 +31,18 @@ public class BlockPositionValidator : MonoBehaviour
         _blockApprove = new UnityEvent();
         _gameOver = new UnityEvent<int>();
         _gameFinish = new UnityEvent<int>();
+    }
+
+    private void OnEnable() {
+        _mapBounds.BlockTouchBounds += OnBlockTouchBounds;
+    }
+
+    private void OnDisable() {
+        _mapBounds.BlockTouchBounds -= OnBlockTouchBounds;
+    }
+
+    private void OnBlockTouchBounds() {
+        _gameOver?.Invoke(_scoreCounter.Score);
     }
 
     public void Initialize(Block startBlock) {

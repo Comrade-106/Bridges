@@ -5,6 +5,7 @@ public class Game : MonoBehaviour
     [SerializeField] private BlockPositionValidator _blockPositionValidator;
     [SerializeField] private BlockSpawner _blockSpawner;
     [SerializeField] private LevelGenerator _levelGenerator;
+    [SerializeField] private BlockTrackingCamera _blockTrackingCamera;
     [SerializeField] private float _blockSize;
     [SerializeField] private float _yOffset;
 
@@ -44,6 +45,7 @@ public class Game : MonoBehaviour
         var block = _blockSpawner.SpawnBlock(side);
         block.transform.position = GetStartPosition(side);
         _blockPositionValidator.SubscribeToStopBlockEvent(block);
+        _blockTrackingCamera.UpdateViewForBlock(block);
 
         _currentBlockNumber++;
     }

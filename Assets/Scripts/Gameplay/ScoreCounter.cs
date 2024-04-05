@@ -3,6 +3,8 @@ using UnityEngine.Events;
 
 public class ScoreCounter : MonoBehaviour
 {
+    [SerializeField] private float _epsilon;
+
     private int _score;
 
     private UnityEvent<int> _updateScore;
@@ -16,9 +18,14 @@ public class ScoreCounter : MonoBehaviour
         remove => _updateScore?.RemoveListener(value);
     }
 
-    public void AddScore(Block block1, Block block2) {
-        _score += block1.transform.position.y == block2.transform.position.y ? 2 : 1;
+    private void Awake() {
+        Debug.Log("Awake");
+        _updateScore = new UnityEvent<int>();
+    }
 
-        _updateScore?.Invoke(_score);
+    public void AddScore(Block block1, Block block2) {
+        _score += (Mathf.Abs(block1.transform.position.y - block2.transform.position.y) <= _epsilon) ? 2 : 1;
+
+        _updateScore.Invoke(_score);
     }
 }
