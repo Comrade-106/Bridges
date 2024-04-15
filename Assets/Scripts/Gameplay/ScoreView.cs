@@ -14,6 +14,10 @@ public class ScoreView : MonoBehaviour
         _scoreCounter.UpdateScore -= OnScoreUpdate;
     }
 
+    public void Show() {
+        _scoreText.text = "0";
+    }
+
     private void OnScoreUpdate(int newScore) {
         _scoreText.text = newScore.ToString();
     }

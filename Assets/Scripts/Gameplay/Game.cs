@@ -12,10 +12,6 @@ public class Game : MonoBehaviour
     private Level _currentLevel;
     private int _currentBlockNumber = 1;
 
-    private void Start() {
-        StartNewGame();
-    }
-
     private void OnEnable() {
         _blockPositionValidator.BlockApprove += OnBlockApprove;
     }
@@ -24,10 +20,10 @@ public class Game : MonoBehaviour
         _blockPositionValidator.BlockApprove -= OnBlockApprove;
     }
 
-    private void StartNewGame() {
+    public void StartNewGame() {
         _currentLevel = _levelGenerator.GenerateNewLevel();
         _blockPositionValidator.Initialize(_currentLevel.StartBlock);
-        RunNextBlock();
+        _blockTrackingCamera.DoStartAnimation(_currentLevel.FinishBlock, RunNextBlock);
     }
 
     private void OnBlockApprove() {
