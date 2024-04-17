@@ -4,6 +4,9 @@ using UnityEngine.Events;
 public class ScoreCounter : MonoBehaviour
 {
     [SerializeField] private float _epsilon;
+    [SerializeField] private AudioClip _goodSound;
+    [SerializeField] private AudioClip _perfectSound;
+    [SerializeField] private AudioSource _audioSource;
 
     private int _score;
 
@@ -19,12 +22,19 @@ public class ScoreCounter : MonoBehaviour
     }
 
     private void Awake() {
-        Debug.Log("Awake");
         _updateScore = new UnityEvent<int>();
     }
 
     public void AddScore(Block block1, Block block2) {
-        _score += (Mathf.Abs(block1.transform.position.y - block2.transform.position.y) <= _epsilon) ? 2 : 1;
+        if (Mathf.Abs(block1.transform.position.y - block2.transform.position.y) <= _epsilon)
+            AddScore(2, _perfectSound);
+        else
+            AddScore(1, _goodSound);
+    }
+
+    private void AddScore(int score, AudioClip clip) {
+        _score += score;
+        _audioSource.PlayOneShot(clip);
 
         _updateScore.Invoke(_score);
     }

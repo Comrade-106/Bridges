@@ -14,16 +14,26 @@ public class Game : MonoBehaviour
 
     private void OnEnable() {
         _blockPositionValidator.BlockApprove += OnBlockApprove;
+        _blockPositionValidator.GameFinish += OnGameFinish;
+        _blockPositionValidator.GameOver += _blockSpawner.HideAllBlocks;
     }
 
     private void OnDisable() {
         _blockPositionValidator.BlockApprove -= OnBlockApprove;
+        _blockPositionValidator.GameFinish -= OnGameFinish;
+        _blockPositionValidator.GameOver -= _blockSpawner.HideAllBlocks;
     }
 
     public void StartNewGame() {
         _currentLevel = _levelGenerator.GenerateNewLevel();
         _blockPositionValidator.Initialize(_currentLevel.StartBlock);
         _blockTrackingCamera.DoStartAnimation(_currentLevel.FinishBlock, RunNextBlock);
+    }
+
+    private void OnGameFinish() {
+        _blockSpawner.HideAllBlocks();
+        StartNewGame();
+        _currentBlockNumber = 1;
     }
 
     private void OnBlockApprove() {

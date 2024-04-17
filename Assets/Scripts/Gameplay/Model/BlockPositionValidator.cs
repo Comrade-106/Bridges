@@ -6,18 +6,20 @@ public class BlockPositionValidator : MonoBehaviour
     [SerializeField] private float _blockSize;
     [SerializeField] private ScoreCounter _scoreCounter;
     [SerializeField] private MapBounds _mapBounds;
+    [SerializeField] private AudioClip _gameOverSound;
+    [SerializeField] private AudioSource _audioSource;
 
     private Block _previousBlock;
-    private UnityEvent<int> _gameOver;
-    private UnityEvent<int> _gameFinish;
+    private UnityEvent _gameOver;
+    private UnityEvent _gameFinish;
     private UnityEvent _blockApprove;
 
-    public event UnityAction<int> GameOver {
+    public event UnityAction GameOver {
         add => _gameOver.AddListener(value);
         remove => _gameOver.RemoveListener(value);
     }
 
-    public event UnityAction<int> GameFinish {
+    public event UnityAction GameFinish {
         add => _gameFinish.AddListener(value);
         remove => _gameFinish.RemoveListener(value);
     }
@@ -29,8 +31,8 @@ public class BlockPositionValidator : MonoBehaviour
 
     private void Awake() {
         _blockApprove = new UnityEvent();
-        _gameOver = new UnityEvent<int>();
-        _gameFinish = new UnityEvent<int>();
+        _gameOver = new UnityEvent();
+        _gameFinish = new UnityEvent();
     }
 
     private void OnEnable() {
@@ -42,7 +44,8 @@ public class BlockPositionValidator : MonoBehaviour
     }
 
     private void OnBlockTouchBounds() {
-        _gameOver?.Invoke(_scoreCounter.Score);
+        Debug.Log("Bounds");
+        _gameOver?.Invoke();
     }
 
     public void Initialize(Block startBlock) {
@@ -62,8 +65,8 @@ public class BlockPositionValidator : MonoBehaviour
 
             _blockApprove?.Invoke();
         } else {
-            Debug.Log("Game Over");
-            _gameOver?.Invoke(_scoreCounter.Score);
+            _audioSource.PlayOneShot(_gameOverSound);
+            _gameOver?.Invoke();
         }
     }
 
@@ -71,11 +74,11 @@ public class BlockPositionValidator : MonoBehaviour
         if (_previousBlock.transform.position.y + _blockSize > block.transform.position.y &&
              _previousBlock.transform.position.y - _blockSize < block.transform.position.y) {
             _scoreCounter.AddScore(_previousBlock, block);
-            Debug.Log("Game Finish");
-            _gameFinish?.Invoke(_scoreCounter.Score);
+            
+            _gameFinish?.Invoke();
         } else {
-            Debug.Log("Game Over");
-            _gameOver?.Invoke(_scoreCounter.Score);
+            _audioSource.PlayOneShot(_gameOverSound);
+            _gameOver?.Invoke();
         }
     }
 }

@@ -13,6 +13,10 @@ public class BlockSpawner : MonoBehaviour
         _pool = GetComponent<ObjectPool>();
     }
 
+    public void HideAllBlocks() {
+        _pool.PutAllBlockInPull();
+    }
+
     public Block SpawnBlock(Side side) {
         var block = _pool.GetBlock();
         ConfigureBlock(block, side);

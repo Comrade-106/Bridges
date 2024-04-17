@@ -8,14 +8,17 @@ public class BlockTrackingCamera : MonoBehaviour
     [SerializeField] private float _animationTime;
 
     private Camera _camera;
+    private Vector3 _startPosition;
 
     private readonly Vector3 _center = new Vector3(0.5f, 0.5f, 0.5f);
 
     private void Awake() {
         _camera = GetComponent<Camera>();
+        _startPosition = transform.position;
     }
 
     public void DoStartAnimation(Block finishBlock, Action OnCompliteAction = null) {
+        transform.position = _startPosition;
         float startX = _camera.transform.position.x;
         Sequence mySequence = DOTween.Sequence();
 

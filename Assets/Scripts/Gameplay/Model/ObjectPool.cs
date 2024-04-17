@@ -27,4 +27,11 @@ public class ObjectPool : MonoBehaviour
 
         return block;
     }
+
+    public void PutAllBlockInPull() {
+        while(_activeBlocks.TryDequeue(out Block block)) {
+            block.gameObject.SetActive(false);
+            _blocks.Enqueue(block);
+        }
+    }
 }

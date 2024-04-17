@@ -25,6 +25,7 @@ public class Block : MonoBehaviour
         _speed = speed;
         _direction = direction;
         _spriteRenderer.color = color;
+        _isStoped = false;
     }
 
     public void Initialize(Color color) {

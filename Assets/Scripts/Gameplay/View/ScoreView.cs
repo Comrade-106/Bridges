@@ -18,6 +18,10 @@ public class ScoreView : MonoBehaviour
         _scoreText.text = "0";
     }
 
+    public void Hide() {
+        _scoreText.text = "";
+    }
+
     private void OnScoreUpdate(int newScore) {
         _scoreText.text = newScore.ToString();
     }
